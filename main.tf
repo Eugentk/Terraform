@@ -10,6 +10,7 @@
 provider "aws" {
   region = var.region
 }
+data "aws_availability_zones" "available" {}
 data "aws_ami" "latest_version" {
   owners      = ["099720109477"]
   most_recent = true
@@ -23,10 +24,10 @@ output "latest_version_linux" {
 }
 
 resource "aws_instance" "server" {
+  #key_name               = "my_key.pem"
   ami                    = data.aws_ami.latest_version.id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.server.id]
-  public_key             = var.key_name
   tags = {
     Name  = "Server from ADV-IT"
     Owner = "Eugen Tkachenko"
@@ -73,11 +74,10 @@ resource "aws_security_group" "server" {
   }
 }
 #---------------------------------------------
-resource "aws_key_pair" "ssh_key" {
-  key_name   = ""
-  public_key = ""
-
-}
+#resource "aws_key_pair" "ssh_key" {
+#  key_name   = "ssh_key"
+#  public_key = "${file("/home/evgeniytkachenko/Documents/Terraform/Terraform.pem")}"
+#}
 
 #-----------------------------------------------------------------
 #
@@ -97,8 +97,32 @@ resource "aws_autoscaling_group" "web" {
   name                 = "WebServer_ASG"
   launch_configuration = aws_launch_configuration.web.name
   min_size             = 1
-  max_size             = 2
-  min_elb_capacity     = 1
+  max_size             = 1
+  vpc_zone_identifier  = [aws_default_subnet.default_az1.id]
+  health_check_type    = "EC2"
+}
 
+/*tags = [
+  {
+    key                 = "Name"
+    value               = "WebServer"
+    propagate_at_launch = true
+  },
+  {
+    key                 = "Owner"
+    value               = "Eugen Tkachenko"
+    propagate_at_launch = true
+  },
+]
+*/
+resource "aws_default_subnet" "default_az1" {
+  availability_zone = data.aws_availability_zones.available.names[0]
+}
+resource "aws_default_subnet" "default_az2" {
+  availability_zone = data.aws_availability_zones.available.names[1]
+}
 
+#-----------------------------------------------------------------
+output "ip" {
+  value = aws_eip.static_ip.public_ip
 }
