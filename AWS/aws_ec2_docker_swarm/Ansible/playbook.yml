@@ -1,0 +1,73 @@
+- hosts: localhost
+  vars:
+    src_folder: ./
+    dst_folder: /home/ubuntu/app
+  tasks:
+
+    - name: Install basic list of packages
+      apt:
+        name: [ 'apt-transport-https','ca-certificates','curl','gnupg2','software-properties-common' ]
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Add Docker official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      become: yes
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+        state: present
+      become: yes
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+      become: yes
+
+    - name: Install packages
+      apt:
+        name:
+          - mc
+          - unzip
+          - awscli
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Run Docker without root
+      shell: sudo usermod -aG docker ubuntu
+
+    - name: Creates app directory
+      file:
+        path: /home/ubuntu/app
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0655'
+
+    - name: Generate docker-stack
+      become: yes
+      template:
+        src: "{{ src_folder }}/docker_stack.j2"
+        dest: "{{ dst_folder }}/docker-stack.yml"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0655'
+
+    - name: Check if Swarm has already been Initialized
+      shell: sudo docker node ls
+      register: swarm_status
+      ignore_errors: true
+      tags: swarm
+
+    - name: Initialize Docker Swarm
+      shell: sudo docker swarm init
+      when: swarm_status.rc != 0
+      run_once: true
+      tags: swarm

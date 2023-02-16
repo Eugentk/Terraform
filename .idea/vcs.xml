@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_ec2_docker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_ec2_docker_swarm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_ecs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_eks_module" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_load_balancer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_rds_mysql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_rds_postgres" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_s3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AWS/aws_vpc" vcs="Git" />
+  </component>
+</project>
