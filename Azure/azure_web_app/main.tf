@@ -3,7 +3,7 @@
 #
 # Main.tf file
 #
-# Made by y.tkachenko@mobidev.biz
+# Made by Tk.eugen@gmail.com
 #-----------------------------------------------------------------------------------------
 
 terraform {

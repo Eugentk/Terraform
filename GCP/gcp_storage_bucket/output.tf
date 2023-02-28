@@ -3,7 +3,7 @@
 #
 # Output.tf file
 #
-# Made by y.tkachenko@mobidev.biz
+# Made by Tk.eugen@gmail.com
 #-----------------------------------------------------------------------------------------
 output "storage_bucket_name" {
   description = "Name of google storage bucket"

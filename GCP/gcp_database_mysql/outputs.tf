@@ -3,7 +3,7 @@
 #
 # outputs.tf file
 #
-# Made by y.tkachenko@mobidev.biz
+# Made by Tk.eugen@gmail.com
 #-----------------------------------------------------------------------------------------
 
 output "mysql_instance_name" {
