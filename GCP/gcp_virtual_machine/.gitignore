@@ -1,0 +1,7 @@
+/.idea/
+/terraform.json
+/.terraform.lock.hcl
+/.terraform.tfstate.lock.info
+/terraform.tfstate
+/.terraform/
+/terraform.tfstate.backup

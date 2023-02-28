@@ -1,0 +1,57 @@
+# **Terraform template to create Azure VM**
+
+**Quick start**
+
+Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (Optional)
+
+Install [Terraform](https://www.terraform.io/downloads.html)
+
+```bash
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform
+```
+
+Configure your Azure access credentials:
+Go to  [Azure Portal](https://portal.azure.com) and open the Cloud Shell console (in the right corner) and put command:
+```bash
+az ad sp create-for-rbac -n "NAME" --role="Contributor" --scopes="/subscriptions/SUBSCRIPTION_ID"
+```
+**NAME** - Name of new Service principal 
+
+**SUBSCRIPTION_ID** - Subscription ID where you will create resources
+
+When you successfully created service principal you get access credentials.
+Put the credentials values to the variables.tf file for this variables 
+
+subscription_id = "********************************"
+
+client_id       = "********************************"
+
+client_secret   = "************************************"
+
+tenant_id       = "********************************"
+
+**Variables**
+
+The variables must be set in the variables.tf file
+
+
+**Start installation**
+
+To create VM, you need to run the following commands:
+
+`terraform init`
+
+`terraform plan`
+
+`terraform apply`
+
+
+When apply command completes, you should be able to access your application on http://VM_IP
+
+Destroy infrastructure. Go to the terraform scripts folder and run:
+
+`terraform destroy`
+
+[More Info about other VM settings](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine)
